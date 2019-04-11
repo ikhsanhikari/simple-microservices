@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: gateway
+
+server:
+  port: 9090
+#============================================================================
+# ZUUL
+#============================================================================
+zuul:
+  sensitive-headers: Cookie, SetCookie
+  prefix: /gateway
+  host:
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+    max-total-connections: 200
+    max-per-route-connections: 20
+    time-unit: MILLISECONDS
+    time-to-live: 10000
+  routes:
+    hikari1 :
+      path : /hikari1/**
+      serviceId : hikari-service-1
+    hikari2:
+      path: /hikari2/**
+      serviceId: hikari-service-2
+
+#============================================================================
+# EUREKA
+#============================================================================
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    registerWithEureka: true
+    fetchRegistry: true
